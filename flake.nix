@@ -28,7 +28,7 @@
           inherit (pkgs) lib;
           eval = pkgs.lib.evalModules {
             modules = [
-              ./src/modules/top-level.nix
+              ./modules/top-level.nix
               { devenv.warnOnNewVersion = false; }
             ];
             specialArgs = { inherit pre-commit-hooks pkgs inputs; };
@@ -64,7 +64,7 @@
           devenv-docs-options = mkDocOptions pkgs;
         });
 
-      modules = ./src/modules;
+      modules = ./modules;
 
       templates =
         let
