@@ -1,0 +1,40 @@
+name: Test examples
+
+on:
+  workflow_call:
+
+env:
+  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+  NEW_GITHUB_WORKSPACE: "/home/runner/work/geonix"
+
+jobs:
+  test-example:
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - basic
+        os:
+          - ubuntu-22.04
+          # - macos-11
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    # Low limit on unix socket path length is causing the problems with PostgreSQL shell.
+    - name: Move source code on shorter path
+      run: |
+        mv $GITHUB_WORKSPACE $NEW_GITHUB_WORKSPACE
+        mkdir -p $GITHUB_WORKSPACE
+
+    - name: Install nix
+      uses: cachix/install-nix-action@v26
+
+    - name: Test example
+      run: bash ./test.sh
+      working-directory: ${{ env.NEW_GITHUB_WORKSPACE }}/examples/${{ matrix.example }}
