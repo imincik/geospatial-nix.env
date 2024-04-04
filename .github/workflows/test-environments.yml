@@ -1,4 +1,4 @@
-name: Test examples
+name: Test environments
 
 on:
   pull_request:
@@ -12,11 +12,11 @@ env:
   NEW_GITHUB_WORKSPACE: "/home/runner/work/geonix"
 
 jobs:
-  test-example:
+  test-env:
     strategy:
       fail-fast: false
       matrix:
-        example:
+        environment:
           - basic
           - basic-process
           - postgres
@@ -41,6 +41,6 @@ jobs:
     - name: Install nix
       uses: cachix/install-nix-action@v26
 
-    - name: Test example
+    - name: Test environment
       run: bash ./test.sh
-      working-directory: ${{ env.NEW_GITHUB_WORKSPACE }}/examples/${{ matrix.example }}
+      working-directory: ${{ env.NEW_GITHUB_WORKSPACE }}/tests/${{ matrix.environment }}
