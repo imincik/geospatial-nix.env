@@ -18,19 +18,11 @@
     url = "github:edolstra/flake-compat";
     flake = false;
   };
-  inputs.nix = {
-    url = "github:domenkozar/nix/relaxed-flakes";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
 
-  outputs = { self, nixpkgs, pre-commit-hooks, nix, ... }@inputs:
+  outputs = { self, nixpkgs, pre-commit-hooks, ... }@inputs:
     let
       systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
       forAllSystems = f: builtins.listToAttrs (map (name: { inherit name; value = f name; }) systems);
-      mkPackage = pkgs: import ./src/devenv.nix {
-        inherit pkgs nix;
-      };
-      mkDevShellPackage = config: pkgs: import ./src/devenv-devShell.nix { inherit config pkgs; };
       mkDocOptions = pkgs:
         let
           inherit (pkgs) lib;
@@ -69,9 +61,6 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in {
-          default = self.packages.${system}.devenv;
-
-          devenv = mkPackage pkgs;
           devenv-docs-options = mkDocOptions pkgs;
         });
 
@@ -133,9 +122,6 @@
               modules = [
                 (self.modules + /top-level.nix)
                 ({ config, ... }: {
-                  packages = [
-                    (mkDevShellPackage config pkgs)
-                  ];
                   devenv.warnOnNewVersion = false;
                   devenv.flakesIntegration = true;
                 })
