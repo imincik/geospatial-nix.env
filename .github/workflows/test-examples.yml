@@ -19,6 +19,7 @@ jobs:
         example:
           - basic
           - basic-process
+          - postgres
         os:
           - ubuntu-22.04
           # - macos-11

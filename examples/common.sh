@@ -10,3 +10,7 @@ function assemble_devenv {
     export DEVENV_STATE
 }
 
+function processes_down {
+
+    kill "$(cat .devenv/state/devenv.pid)"
+}
