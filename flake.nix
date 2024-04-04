@@ -66,46 +66,6 @@
 
       modules = ./modules;
 
-      templates =
-        let
-
-          flake-parts = {
-            path = ./templates/flake-parts;
-            description = "A flake with flake-parts, direnv and devenv.";
-            welcomeText = ''
-              # `.devenv` should be added to `.gitignore`
-              ```sh
-                echo .devenv >> .gitignore
-              ```
-            '';
-          };
-
-          simple = {
-            path = ./templates/simple;
-            description = "A direnv supported Nix flake with devenv integration.";
-            welcomeText = ''
-              # `.devenv` should be added to `.gitignore`
-              ```sh
-                echo .devenv >> .gitignore
-              ```
-            '';
-          };
-        in
-        {
-          inherit simple flake-parts;
-          terraform = {
-            path = ./templates/terraform;
-            description = "A Terraform Nix flake with devenv integration.";
-            welcomeText = ''
-              # `.devenv` should be added to `.gitignore`
-              ```sh
-                echo .devenv >> .gitignore
-              ```
-            '';
-          };
-          default = simple;
-        };
-
       flakeModule = import ./flake-module.nix self;
 
       lib = {
