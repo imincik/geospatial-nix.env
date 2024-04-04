@@ -5,4 +5,4 @@ set -euo pipefail
 nix flake check --impure
 nix flake show --impure
 
-nix develop --impure --command gdalinfo --version | grep GDAL
+nix develop --impure --accept-flake-config --command gdalinfo --version | grep GDAL
