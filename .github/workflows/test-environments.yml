@@ -20,6 +20,7 @@ jobs:
           - basic
           - basic-process
           - postgres
+          - python-poetry
         os:
           - ubuntu-22.04
           # - macos-11
