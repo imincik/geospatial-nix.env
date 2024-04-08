@@ -34,7 +34,7 @@
             specialArgs = { inherit pre-commit-hooks pkgs inputs; };
           };
           sources = [
-            { name = "${self}"; url = "https://github.com/cachix/devenv/blob/main"; }
+            { name = "${self}"; url = "https://github.com/imincik/geospatial-nix.env/blob/master"; }
             { name = "${pre-commit-hooks}"; url = "https://github.com/cachix/pre-commit-hooks.nix/blob/master"; }
           ];
           rewriteSource = decl:
