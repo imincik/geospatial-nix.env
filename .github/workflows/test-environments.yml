@@ -43,6 +43,12 @@ jobs:
     - name: Install nix
       uses: cachix/install-nix-action@v26
 
+    - name: Setup cachix
+      uses: cachix/cachix-action@v14
+      with:
+        name: geonix
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
     - name: Test environment
       run: bash ./test.sh
       working-directory: ${{ env.NEW_GITHUB_WORKSPACE }}/tests/${{ matrix.environment }}
