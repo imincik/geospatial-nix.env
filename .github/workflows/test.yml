@@ -1,4 +1,4 @@
-name: Test environments
+name: Test
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ env:
   NEW_GITHUB_WORKSPACE: "/home/runner/work/geonix"
 
 jobs:
-  test-env:
+  test:
     strategy:
       fail-fast: false
       matrix:
@@ -50,6 +50,6 @@ jobs:
         name: geonix
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-    - name: Test environment
+    - name: Run test
       run: bash ./test.sh
       working-directory: ${{ env.NEW_GITHUB_WORKSPACE }}/tests/${{ matrix.environment }}
