@@ -17,7 +17,7 @@
     geonix.url = "github:imincik/geospatial-nix";
     nixpkgs.follows = "geonix/nixpkgs";
     devenv = {
-      url = "path:../../.";
+      url = "github:imincik/geospatial-nix.env/1.0.0";
       inputs.nixpkgs.follows = "geonix/nixpkgs";
     };
     nix2container = {
@@ -45,7 +45,7 @@
           ];
         };
 
-        packages.geonixcli = inputs.devenv.packages.${system}.geonixcli;
+        packages.geonixcli = inputs.geonix.packages.${system}.geonixcli;
       };
 
       flake = { };
