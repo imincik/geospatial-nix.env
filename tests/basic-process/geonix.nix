@@ -9,6 +9,6 @@ let
 
 in {
   processes.test.exec = ''
-    echo "Running test service"
+    ${pkgs.python3}/bin/python -m http.server
   '';
 }

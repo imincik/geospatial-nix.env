@@ -10,5 +10,5 @@ sys.path.append(nix_python_sitepackages)
 from osgeo import gdal
 import flask
 
-print(gdal)
-print(flask)
+print("gdal module:", gdal)
+print("flask module", flask)
