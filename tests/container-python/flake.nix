@@ -45,7 +45,7 @@
           ];
         };
 
-        packages.geonixcli = inputs.geonix.packages.${system}.geonixcli;
+        packages.geonixcli = inputs.devenv.packages.${system}.geonixcli;
       };
 
       flake = { };

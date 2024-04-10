@@ -23,6 +23,7 @@ jobs:
           - container-python
           - container-shell
           - custom-package
+          - geonixcli
           - postgres
           - python-poetry
         os:
