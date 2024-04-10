@@ -19,9 +19,10 @@ jobs:
         environment:
           - basic
           - basic-process
-          - container-shell
-          - container-python
           - container-process
+          - container-python
+          - container-shell
+          - custom-package
           - postgres
           - python-poetry
         os:

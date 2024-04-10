@@ -13,6 +13,7 @@ in {
   ];
 
   enterShell = ''
+    set -euo pipefail
     gdalinfo --version | grep GDAL
     exit 0
   '';

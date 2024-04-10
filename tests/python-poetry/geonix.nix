@@ -24,6 +24,7 @@ in {
   env.NIX_PYTHON_SITEPACKAGES = "${python}/${python.sitePackages}";
 
   enterShell = ''
+    set -euo pipefail
     poetry run python ./test.py
     exit 0
   '';
