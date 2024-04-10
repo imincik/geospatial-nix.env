@@ -11,4 +11,9 @@ in {
   packages = [
     geopkgs.gdal-minimal
   ];
+
+  enterShell = ''
+    gdalinfo --version | grep GDAL
+    exit 0
+  '';
 }

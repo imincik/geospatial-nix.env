@@ -4,4 +4,4 @@ set -euo pipefail
 
 source ../common.sh
 
-nix "${NIX_FLAGS[@]}" develop --impure --command poetry run python ./test.py
+nix run .#geonixcli -- shell
