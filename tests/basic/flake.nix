@@ -15,11 +15,11 @@
 
   inputs = {
     geonix.url = "github:imincik/geospatial-nix";
-    nixpkgs.follows = "geonix/nixpkgs";
-    devenv = {
+    geoenv = {
       url = "path:../../.";
       inputs.nixpkgs.follows = "geonix/nixpkgs";
     };
+    nixpkgs.follows = "geonix/nixpkgs";
     nix2container = {
       url = "github:nlewo/nix2container";
       inputs.nixpkgs.follows = "geonix/nixpkgs";
@@ -31,7 +31,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
 
       imports = [
-        inputs.devenv.flakeModule
+        inputs.geoenv.flakeModule
       ];
 
       systems = [ "x86_64-linux" ];
@@ -45,7 +45,7 @@
           ];
         };
 
-        packages.geonixcli = inputs.devenv.packages.${system}.geonixcli;
+        packages.geonixcli = inputs.geoenv.packages.${system}.geonixcli;
       };
 
       flake = { };
