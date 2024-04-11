@@ -70,7 +70,7 @@ git push origin "$VERSION"
 git push -f origin latest
 ```
 
-## Devenv origin
+## Project origin
 
 This project is a fork of [Devenv](https://devenv.sh/) started in version
 `be7e835`.
