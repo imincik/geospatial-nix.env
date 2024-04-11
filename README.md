@@ -24,7 +24,7 @@ mkdir my-project && cd my-project
 
 git init
 
-nix run github:imincik/geospatial-nix-env#geonixcli -- init
+nix run github:imincik/geospatial-nix.env#geonixcli -- init
 
 git add *
 ```
