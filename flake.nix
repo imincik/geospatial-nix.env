@@ -97,7 +97,6 @@
             ci = config.ciDerivation;
             inherit config;
           };
-        customizePackages = import ./modules/customize-packages.nix;
       };
 
       overlays.default = final: prev: {

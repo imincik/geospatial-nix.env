@@ -357,7 +357,7 @@ elif [ "${args[0]}" == "override" ]; then
         echo
         echo "Example usage in geonix.nix file:"
         echo "'''"
-        echo "geopkgs = inputs.devenv.lib.customizePackages {        "
+        echo "geopkgs = inputs.geonix.lib.customizePackages {        "
         echo "  nixpkgs = pkgs;                                      "
         echo "  geopkgs = inputs.geonix.packages.\${pkgs.system};     "
         echo "  overridesFile = ./overrides.nix;                     "

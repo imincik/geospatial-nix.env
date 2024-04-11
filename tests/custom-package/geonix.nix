@@ -5,7 +5,7 @@
 { inputs, config, lib, pkgs, ... }:
 
 let
-  geopkgs = inputs.devenv.lib.customizePackages {
+  geopkgs = inputs.geonix.lib.customizePackages {
     nixpkgs = pkgs;
     geopkgs = inputs.geonix.packages.${pkgs.system};
     overridesFile = ./overrides.nix;
