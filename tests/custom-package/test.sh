@@ -4,7 +4,7 @@ set -euo pipefail
 
 source ../common.sh
 
-cp ../../pkgs/geonixcli/templates/override/overrides.nix .
+cp "$(nix "${NIX_FLAGS[@]}" eval .#overrides)" overrides.nix
 patch -u overrides.nix -i gdal.patch
 
 nix run .#geonixcli -- shell
