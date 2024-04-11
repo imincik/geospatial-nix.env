@@ -40,7 +40,7 @@
 
         devenv.shells.default = {
           imports = [
-              inputs.geonix.modules
+            inputs.geonix.modules
             ./geonix.nix
           ];
         };
@@ -48,6 +48,8 @@
         packages.geonixcli = inputs.geonix.packages.${system}.geonixcli;
       };
 
-      flake = { };
+      flake = {
+        overrides = inputs.geonix.overrides;
+      };
     };
 }

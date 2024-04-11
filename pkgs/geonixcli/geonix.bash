@@ -350,7 +350,7 @@ elif [ "${args[0]}" == "override" ]; then
     if [ -f "$(pwd)/overrides.nix" ]; then
         die "Override template file already exists in $(pwd) directory."
     else
-        cp "$GEONIX_TEMPLATES_DIR"/override/overrides.nix "$(pwd)"/overrides.nix
+        cp "$(nix "${NIX_FLAGS[@]}" eval .#overrides)" "$(pwd)"/overrides.nix
         chmod u+w "$(pwd)"/overrides.nix
 
         echo -e "\nOverride template file created in $(pwd)/overrides.nix ."
