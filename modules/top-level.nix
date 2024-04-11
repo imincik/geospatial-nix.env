@@ -134,7 +134,6 @@ in
     ./info.nix
     ./processes.nix
     ./scripts.nix
-    ./update-check.nix
     ./containers.nix
     ./debug.nix
   ]

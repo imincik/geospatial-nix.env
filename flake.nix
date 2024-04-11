@@ -29,7 +29,7 @@
           eval = pkgs.lib.evalModules {
             modules = [
               ./modules/top-level.nix
-              { devenv.warnOnNewVersion = false; }
+              # { devenv.someConfiguration = value; }
             ];
             specialArgs = { inherit pre-commit-hooks pkgs inputs; };
           };
@@ -83,8 +83,7 @@
               modules = [
                 (self.modules + /top-level.nix)
                 ({ config, ... }: {
-                  devenv.warnOnNewVersion = false;
-                  devenv.flakesIntegration = true;
+                  # devenv.someConfiguration = value;
                 })
               ] ++ modules;
             };
