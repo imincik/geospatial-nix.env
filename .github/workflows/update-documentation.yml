@@ -43,3 +43,5 @@ jobs:
         git add .
         git diff-index --quiet HEAD || git commit -m "Automatic documentation update" && git push
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
