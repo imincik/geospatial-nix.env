@@ -1,0 +1,45 @@
+name: Update documentation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+
+jobs:
+  update-docs:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout source code repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout wiki repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{github.repository}}.wiki
+        path: wiki
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install nix
+      uses: cachix/install-nix-action@v26
+
+    - name: Update documentation
+      run: cp $(nix build --impure --accept-flake-config --no-link --print-out-paths .#documentation) wiki/Configuration.md
+
+    - name: Push to wiki
+      run: |
+        cd wiki
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff-index --quiet HEAD || git commit -m "Automatic documentation update" && git push
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
