@@ -61,7 +61,7 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in {
-          devenv-docs-options = mkDocOptions pkgs;
+          documentation = mkDocOptions pkgs;
           geonixcli = pkgs.callPackage ./pkgs/geonixcli { };
         });
 
