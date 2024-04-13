@@ -26,6 +26,8 @@ jobs:
           - example-python-web
           - geonixcli
           - locales
+          - pg_featureserv
+          - pg_tileserv
           - postgres
           - python-poetry
         os:
