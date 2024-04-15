@@ -7,8 +7,18 @@ on:
       - master
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run
+# in-progress and latest queued. However, do NOT cancel in-progress runs as we
+# want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 env:
   NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
@@ -20,29 +30,35 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout source code repository
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout source code repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Checkout wiki repository
-      uses: actions/checkout@v4
-      with:
-        repository: ${{github.repository}}.wiki
-        path: wiki
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install nix
+        uses: cachix/install-nix-action@v26
 
-    - name: Install nix
-      uses: cachix/install-nix-action@v26
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-    - name: Update documentation
-      run: cp $(nix build --impure --accept-flake-config --no-link --print-out-paths .#documentation) wiki/Configuration.md
+      - name: Update configuration options
+        run: >
+          cp
+          $(nix build --impure --accept-flake-config --no-link --print-out-paths .#documentation)
+          docs/src/configuration-options.md
 
-    - name: Push to wiki
-      run: |
-        cd wiki
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git diff-index --quiet HEAD || git commit -m "Automatic documentation update" && git push
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      - name: Build documentation
+        run: |
+          nix develop --impure --accept-flake-config --command mkdocs build
+        working-directory: docs
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'site'
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
