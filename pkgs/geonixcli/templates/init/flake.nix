@@ -14,9 +14,9 @@
   };
 
   inputs = {
-    geonix.url = "github:imincik/geospatial-nix";
+    geonix.url = "github:imincik/geospatial-nix/latest";
     geoenv = {
-      url = "github:imincik/geospatial-nix.env/1.0.0";
+      url = "github:imincik/geospatial-nix.env/latest";
       inputs.nixpkgs.follows = "geonix/nixpkgs";
     };
     nixpkgs.follows = "geonix/nixpkgs";
