@@ -1,0 +1,3 @@
+site_name: Geospatial NIX.env documentation
+docs_dir: src
+theme: readthedocs
