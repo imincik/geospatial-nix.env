@@ -51,3 +51,7 @@ nix run ../..#geonixcli -- update
 echo -e "\nCOMMAND: geonixcli override"
 nix run ../..#geonixcli -- override
 stat --terse ./overrides.nix
+
+# version
+echo -e "\nCOMMAND: geonixcli version"
+nix run ../..#geonixcli -- version

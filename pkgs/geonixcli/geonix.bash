@@ -7,12 +7,14 @@ function usage {
 cat <<EOF
 Usage: geonix [-h] [-v] command arg1 [arg2...]
 
+
 Available options:
 
 -h, --help          Print this help and exit.
 -v, --verbose       Print script debug info.
 
-Available commands:
+
+Basic commands:
 
 init                Initialize current directory with initial files.
 
@@ -20,9 +22,22 @@ shell               Launch shell environment.
 
 up                  Start processes configured in geonix.nix.
 
-search <PACKAGE>    Search for packages available in Geospatial NIX or Nixpkgs
-                    repository. Search is performed for revisions according
-                    flake.lock file.
+override            Create overrides.nix template file in current
+                    directory for building customized Geospatial NIX packages.
+
+
+Container commands:
+
+container <NAME>    Build and import container image to Docker local registry.
+
+container-config    Print container configuration as JSON.
+          <NAME>
+
+
+Management commands:
+
+search <PACKAGE>    Search for packages in Geospatial NIX or Nixpkgs
+                    repository.
 
                     To search for multiple package names separate them with
                     pipe ("PACKAGE-X|PACKAGE-Y").
@@ -30,13 +45,7 @@ search <PACKAGE>    Search for packages available in Geospatial NIX or Nixpkgs
 update [INPUT]      Update Geospatial NIX packages and/or Geospatial NIX.env
                     input (will update flake.lock file).
 
-container <NAME>    Build and import container image to Docker local registry.
-
-container-config    Print container configuration as JSON.
-          <NAME>
-
-override            Create overrides.nix template file in current
-                    directory for building customized Geospatial NIX packages.
+version             Print environment inputs versions.
 
 EOF
   exit
@@ -49,7 +58,7 @@ function cleanup {
 
 function setup_colors {
   if [[ -t 2 ]] && [[ "${TERM-}" != "dumb" ]]; then
-    NOFORMAT='\033[1m' BOLD='\033[1m'
+    NOFORMAT='\033[0m' BOLD='\033[1m'
   else
     NOFORMAT='' BOLD=''
   fi
@@ -177,6 +186,53 @@ function get_geonix_metadata {
         geonix_rev=$( \
             nix "${NIX_FLAGS[@]}" flake metadata  --json \
             | jq --raw-output '.locks.nodes.geonix.locked.rev' \
+        )
+    fi
+}
+
+function get_geoenv_metadata {
+    geoenv_exists=$( \
+        nix "${NIX_FLAGS[@]}" flake metadata  --json \
+        | jq --raw-output '.locks.nodes.geoenv' \
+    )
+
+    if [ "$geoenv_exists" != "null" ]; then
+
+        geoenv_type=$( \
+            nix "${NIX_FLAGS[@]}" flake metadata  --json \
+            | jq --raw-output '.locks.nodes.geoenv.original.type'
+        )
+
+        if [ "$geoenv_type" == "github" ]; then
+
+            geoenv_url=$( \
+                nix "${NIX_FLAGS[@]}" flake metadata  --json \
+                | jq --raw-output '
+                    (.locks.nodes.geoenv.original.type)
+                    + ":" + (.locks.nodes.geoenv.original.owner)
+                    + "/"
+                    + (.locks.nodes.geoenv.original.repo)
+                ' \
+            )
+
+        elif [ "$geoenv_type" == "path" ]; then
+
+            geoenv_url=$( \
+                nix "${NIX_FLAGS[@]}" flake metadata  --json \
+                | jq --raw-output '.locks.nodes.geoenv.original.path' \
+            )
+        fi
+
+        # shellcheck disable=SC2034
+        geoenv_ref=$( \
+            nix "${NIX_FLAGS[@]}" flake metadata  --json \
+            | jq --raw-output '.locks.nodes.geoenv.original.ref' \
+            | sed 's|/$||'
+        )
+
+        geoenv_rev=$( \
+            nix "${NIX_FLAGS[@]}" flake metadata  --json \
+            | jq --raw-output '.locks.nodes.geoenv.locked.rev' \
         )
     fi
 }
@@ -373,6 +429,19 @@ elif [ "${args[0]}" == "override" ]; then
         echo
         echo "Don't forget to add overrides.nix file to git."
     fi
+
+
+# VERSION
+elif [ "${args[0]}" == "version" ]; then
+
+    get_nixpkgs_metadata
+    get_geonix_metadata
+    get_geoenv_metadata
+
+    echo
+    echo -e "${BOLD}Nixpkgs:${NOFORMAT}            $nixpkgs_url/$nixpkgs_rev"
+    echo -e "${BOLD}Geospatial NIX:${NOFORMAT}     $geonix_url/$geonix_rev"
+    echo -e "${BOLD}Geospatial NIX.env:${NOFORMAT} $geoenv_url/$geoenv_rev"
 
 
 # HELP
