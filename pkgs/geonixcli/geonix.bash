@@ -9,8 +9,8 @@ Usage: geonix [-h] [-v] command arg1 [arg2...]
 
 Available options:
 
--h, --help          Print this help and exit
--v, --verbose       Print script debug info
+-h, --help          Print this help and exit.
+-v, --verbose       Print script debug info.
 
 Available commands:
 
@@ -19,24 +19,21 @@ init                Initialize current directory with initial files.
 shell               Launch shell environment.
 
 up                  Start processes configured in geonix.nix.
-                    See: http://devenv.sh/processes
 
-search PACKAGE      Search for packages available in Geospatial NIX or Nixpkgs
+search <PACKAGE>    Search for packages available in Geospatial NIX or Nixpkgs
                     repository. Search is performed for revisions according
                     flake.lock file.
 
                     To search for multiple package names separate them with
                     pipe ("PACKAGE-X|PACKAGE-Y").
 
-update              Update Geospatial NIX packages and environment
-                    (will update flake.lock file).
+update [INPUT]      Update Geospatial NIX packages and/or Geospatial NIX.env
+                    input (will update flake.lock file).
 
-container NAME      Build and import container image to Docker local registry.
-
-                    See: https://devenv.sh/containers
+container <NAME>    Build and import container image to Docker local registry.
 
 container-config    Print container configuration as JSON.
-            NAME
+          <NAME>
 
 override            Create overrides.nix template file in current
                     directory for building customized Geospatial NIX packages.
@@ -296,14 +293,24 @@ elif [ "${args[0]}" == "search" ]; then
 # UPDATE
 elif [ "${args[0]}" == "update" ]; then
 
-    # `nix flake lock --update-input` was removed in nix 2.19
-    if versionge "$(nix_version)" "2.19.0"; then
-        # new syntax
-        nix "${NIX_FLAGS[@]}" flake update geonix
+    if [ ${#args[@]} -lt 2 ]; then
+        update_inputs=( "geonix" "geoenv" )
     else
-        # old syntax
-        nix "${NIX_FLAGS[@]}" flake lock --update-input geonix
+        update_inputs=( "$2" )
     fi
+
+    for inp in "${update_inputs[@]}"; do
+        echo -e "\nUpdating $inp ..."
+
+        # `nix flake lock --update-input` was removed in nix 2.19
+        if versionge "$(nix_version)" "2.19.0"; then
+            # new syntax
+            nix "${NIX_FLAGS[@]}" flake update "$inp"
+        else
+            # old syntax
+            nix "${NIX_FLAGS[@]}" flake lock --update-input "$inp"
+        fi
+    done
 
 
 # CONTAINER
