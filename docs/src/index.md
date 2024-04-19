@@ -27,8 +27,7 @@ git add *
 ## Configuration
 
 * Edit `geonix.nix` file
-  ([check out available configuration options](configuration-options.md)
-  )
+  ([check out available configuration options](configuration-options.md))
 
 ## Usage
 
@@ -46,4 +45,9 @@ nix run .#geonixcli -- up
 ```bash
 nix run .#geonixcli -- container shell
 docker run --rm -it shell:latest
+```
+
+* Show other commands
+```bash
+nix run .#geonixcli -- --help
 ```
