@@ -29,10 +29,9 @@ nix run github:imincik/geospatial-nix.env/latest#geonixcli -- init
 git add *
 ```
 
-* Edit `geonix.nix` file according to your project requirements
-  (check out
-  [configuration docs](https://github.com/imincik/geospatial-nix.env/wiki/Configuration)
-  )
+* Edit `geonix.nix` file
+  [(check out available configuration options)]
+  (https://imincik.github.io/geospatial-nix.env/configuration-options/)
 
 * Launch shell environment
 ```bash
