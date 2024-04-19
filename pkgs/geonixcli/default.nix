@@ -1,12 +1,13 @@
 { stdenv
 , lib
 , makeWrapper
+
 , bash
 , jq
 , shellcheck
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "geonixcli";
   version = "0.1.0";
 
@@ -36,7 +37,7 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "Geonix convenience tools";
+    description = "Geospatial NIX.env management CLI";
     homepage = "https://github.com/imincik/geospatial-nix.env";
     license = licenses.mit;
     platforms = platforms.unix;

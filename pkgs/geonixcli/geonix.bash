@@ -9,8 +9,8 @@ Usage: geonix [-h] [-v] command arg1 [arg2...]
 
 Available options:
 
--h, --help          Print this help and exit
--v, --verbose       Print script debug info
+-h, --help          Print this help and exit.
+-v, --verbose       Print script debug info.
 
 Available commands:
 
@@ -19,9 +19,8 @@ init                Initialize current directory with initial files.
 shell               Launch shell environment.
 
 up                  Start processes configured in geonix.nix.
-                    See: http://devenv.sh/processes
 
-search PACKAGE      Search for packages available in Geospatial NIX or Nixpkgs
+search <PACKAGE>    Search for packages available in Geospatial NIX or Nixpkgs
                     repository. Search is performed for revisions according
                     flake.lock file.
 
@@ -31,12 +30,10 @@ search PACKAGE      Search for packages available in Geospatial NIX or Nixpkgs
 update [INPUT]      Update Geospatial NIX packages and/or Geospatial NIX.env
                     input (will update flake.lock file).
 
-container NAME      Build and import container image to Docker local registry.
-
-                    See: https://devenv.sh/containers
+container <NAME>    Build and import container image to Docker local registry.
 
 container-config    Print container configuration as JSON.
-            NAME
+          <NAME>
 
 override            Create overrides.nix template file in current
                     directory for building customized Geospatial NIX packages.
