@@ -19,6 +19,10 @@ git init
 nix run ../..#geonixcli -- init
 git add *
 
+# check
+echo -e "\nCOMMAND: geonixcli check"
+nix run ../..#geonixcli -- check
+
 # search
 echo -e "\nCOMMAND: geonixcli search"
 nix run ../..#geonixcli -- search gdal | grep 'geopkgs.gdal'

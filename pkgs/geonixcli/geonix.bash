@@ -18,6 +18,8 @@ Basic commands:
 
 init                Initialize current directory with initial files.
 
+check               Check configuration for errors.
+
 shell               Launch shell environment.
 
 up                  Start processes configured in geonix.nix.
@@ -284,7 +286,7 @@ elif [ "${args[0]}" == "up" ]; then
 
     assemble_devenv
 
-    procfilescript=$(nix "${NIX_FLAGS[@]}" build '.#devenv-up' --no-link --print-out-paths --impure)
+    procfilescript=$(nix "${NIX_FLAGS[@]}" build '.#devenv-up' --impure --no-link --print-out-paths)
 
     # shellcheck disable=SC2086
     if [ "$(cat $procfilescript|tail -n +2)" = "" ]; then
@@ -381,7 +383,7 @@ elif [ "${args[0]}" == "container" ]; then
 
     export DEVENV_CONTAINER=1
     copy_script=$( \
-        nix build ".#container-$container_name.copyToDockerDaemon" --no-link --print-out-paths --impure \
+        nix build ".#container-$container_name.copyToDockerDaemon" --impure --no-link --print-out-paths \
     )
     "$copy_script/bin/copy-to-docker-daemon"
 
@@ -402,7 +404,7 @@ elif [ "${args[0]}" == "container-config" ]; then
 
     export DEVENV_CONTAINER=1
     container_config=$( \
-        nix build ".#container-$container_name" --no-link --print-out-paths --impure \
+        nix build ".#container-$container_name" --impure --no-link --print-out-paths \
     )
     cat "$container_config"
 
@@ -429,6 +431,12 @@ elif [ "${args[0]}" == "override" ]; then
         echo
         echo "Don't forget to add overrides.nix file to git."
     fi
+
+
+# check
+elif [ "${args[0]}" == "check" ]; then
+
+    nix "${NIX_FLAGS[@]}" flake check --impure --no-build
 
 
 # VERSION
