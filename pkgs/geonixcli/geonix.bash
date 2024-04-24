@@ -269,7 +269,10 @@ if [ "${args[0]}" == "init" ]; then
         echo "$init_file file created in $(pwd)/$init_file."
     done
 
-    echo -e "\nStart by adding flake.nix and geonix.nix files to git."
+    echo -e "\nInstall direnv and rename dot-envrc to .envrc to get automatic"
+    echo "environment activation."
+    echo
+    echo "Start by adding flake.nix and geonix.nix files to git."
     echo "Use https://geospatial-nix.today to add more configuration."
     echo
     echo "Enter the environment by running 'nix run .#geonixcli -- shell'."
