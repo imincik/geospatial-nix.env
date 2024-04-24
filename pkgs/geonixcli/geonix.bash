@@ -413,23 +413,13 @@ elif [ "${args[0]}" == "container-config" ]; then
 elif [ "${args[0]}" == "override" ]; then
 
     if [ -f "$(pwd)/overrides.nix" ]; then
-        die "Override template file already exists in $(pwd) directory."
+        die "overrides.nix file already exists in $(pwd) directory."
     else
         cp "$(nix "${NIX_FLAGS[@]}" eval .#overrides)" "$(pwd)"/overrides.nix
         chmod u+w "$(pwd)"/overrides.nix
 
-        echo -e "\nOverride template file created in $(pwd)/overrides.nix ."
-        echo
-        echo "Example usage in geonix.nix file:"
-        echo "'''"
-        echo "geopkgs = inputs.geonix.lib.customizePackages {        "
-        echo "  nixpkgs = pkgs;                                      "
-        echo "  geopkgs = inputs.geonix.packages.\${pkgs.system};     "
-        echo "  overridesFile = ./overrides.nix;                     "
-        echo "};                                                     "
-        echo "'''"
-        echo
-        echo "Don't forget to add overrides.nix file to git."
+        echo -e "\noverrides.nix file created in $(pwd)/overrides.nix ."
+        echo "Don't forget to add it to git."
     fi
 
 
