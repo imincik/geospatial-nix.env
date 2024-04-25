@@ -23,3 +23,8 @@ git tag -f -a "latest" -m "Latest released version"
 git push origin "$VERSION"
 git push -f origin latest
 ```
+
+* Create release
+```bash
+gh release create "$VERSION" --generate-notes
+```
