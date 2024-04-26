@@ -153,8 +153,6 @@ in
         throw ''
           devenv was not able to determine the current directory.
           Make sure Nix runs with the `--impure` flag.
-
-          See https://devenv.sh/guides/using-with-flakes/
         ''
       else pwd
     );

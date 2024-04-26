@@ -73,8 +73,6 @@ in
           echo
           echo "   To enable it, add \`dotenv.enable = true;\` to your devenv.nix file.";
           echo "   To disable this hint, add \`dotenv.disableHint = true;\` to your devenv.nix file.";
-          echo
-          echo "See https://devenv.sh/integrations/dotenv/ for more information.";
         '';
     })
   ];
