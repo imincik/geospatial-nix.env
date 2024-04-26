@@ -1,9 +1,13 @@
 {
-  description = "devenv.sh - Fast, Declarative, Reproducible, and Composable Developer Environments";
+  description = "Geospatial NIX.env";
 
   nixConfig = {
-    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
-    extra-substituters = "https://devenv.cachix.org";
+    extra-substituters = [
+      "https://geonix.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "geonix.cachix.org-1:iyhIXkDLYLXbMhL3X3qOLBtRF8HEyAbhPXjjPeYsCl0="
+    ];
   };
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
