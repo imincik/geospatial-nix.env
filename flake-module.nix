@@ -18,7 +18,7 @@ devenvFlake: { flake-parts-lib, lib, inputs, ... }: {
       options.devenv.shells = lib.mkOption {
         type = lib.types.lazyAttrsOf devenvType;
         description = ''
-          The [devenv.sh](https://devenv.sh) settings, per shell.
+          The devenv's settings, per shell.
 
           Each definition `devenv.shells.<name>` results in a value for
           [`devShells.<name>`](flake-parts.html#opt-perSystem.devShells).
