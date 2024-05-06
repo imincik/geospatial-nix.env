@@ -1,3 +1,27 @@
 site_name: Geospatial NIX.env documentation
 docs_dir: src
 theme: readthedocs
+
+nav:
+  - Quick start: index.md
+  - Packages: packages.md
+  - CLI: geonixcli.md
+  - About Geospatial NIX: about.md
+  - Project lifecycle:
+    - Initialization: project-init.md
+    - Configuration: project-configuration.md
+    - Shell environments and services: shell-environments.md
+    - Update: project-update.md
+    - Customization: packages-customization.md
+    - Production deployment: production-deployment.md
+    - Extending project: project-extending.md
+    - OpenGL support: opengl.md
+  - Example use cases:
+    - Python web application: https://github.com/imincik/geospatial-nix.env/tree/master/examples/python-web
+  - Documentation:
+    - Configuration options: configuration-options.md
+    - Nix documentation: https://nix.dev/
+
+markdown_extensions:
+  - tables
+  - admonition
