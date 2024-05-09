@@ -59,6 +59,7 @@ jobs:
           - example-python-web
           - geonixcli
           - locales
+          - nixgl
           - pg_featureserv
           - pg_tileserv
           - postgres
