@@ -64,6 +64,7 @@ jobs:
           - pg_tileserv
           - postgres
           - python-poetry
+          - qgis
         os:
           - ubuntu-22.04
           # - macos-11
