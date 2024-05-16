@@ -13,27 +13,51 @@ in
       type = lib.types.package;
       default = geopkgs.qgis;
       defaultText = lib.literalExpression "geopkgs.qgis";
-      description = "The QGIS package to use.";
+      description = "QGIS package to use.";
+    };
+
+    pythonPackages = lib.mkOption {
+      type = with lib.types; nullOr (functionTo (listOf package));
+      default = null;
+      description = "List of extra Python packages to include.";
+      example = lib.literalExpression ''
+        packages: [
+          pkgs.flask
+          geopkgs.python3-fiona
+        ];
+      '';
     };
 
     plugins = lib.mkOption {
-      type = with lib.types; nullOr (listOf package);
+      # This could be 'type = with lib.types; nullOr (listOf package);', but we
+      # keep consistency with pythonPackages which is 'ps: []' function.
+      type = with lib.types; nullOr (functionTo (listOf package));
       default = null;
       description = "List of QGIS plugins to include.";
+      example = lib.literalExpression ''
+        plugins: [
+          geopkgs.qgis-plugin-qgis2web
+          geopkgs.qgis-plugin-QGIS-Cloud-Plugin
+        ];
+      '';
     };
   };
 
   config =
     let
+      qgisPackage = cfg.package.override { extraPythonPackages = cfg.pythonPackages; };
+
       pluginsCollection = pkgs.symlinkJoin {
         name = "qgis-plugins-collection";
-        paths = cfg.plugins;
+        # This could be 'paths = cfg.plugins;', but we need to get list from
+        # 'ps: []' function.
+        paths = cfg.plugins "give-me-a-list-of-plugins";
       };
     in
 
     lib.mkIf cfg.enable {
       packages = [
-        cfg.package
+        qgisPackage
       ];
 
       env.QGIS_PLUGINPATH = pluginsCollection;
