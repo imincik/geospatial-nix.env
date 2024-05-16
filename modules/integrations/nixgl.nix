@@ -1,6 +1,7 @@
 { inputs, config, pkgs, lib, ... }:
 
 let
+  cfg = config.nixgl;
   geopkgs = inputs.geonix.packages.${pkgs.system};
 
 in
@@ -16,9 +17,9 @@ in
     };
   };
 
-  config = lib.mkIf config.nixgl.enable {
+  config = lib.mkIf cfg.enable {
     packages = [
-      config.nixgl.package
+      cfg.package
     ];
 
     enterShell = ''
