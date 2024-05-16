@@ -13,13 +13,14 @@ in
 
   applications.qgis = {
     enable = true;
-    plugins = with geopkgs; [ qgis-plugin-qgis2web qgis-plugin-MapTiler ];
+    pythonPackages = p: [ pkgs.python3Packages.flask geopkgs.python3-fiona ];
+    plugins = p: [ geopkgs.qgis-plugin-qgis2web geopkgs.qgis-plugin-QGIS-Cloud-Plugin ];
   };
 
   enterShell = ''
     set -euo pipefail
-    # TODO: test installed plugins
     echo "Shell environment was successfully activated."
+    # qgis --code ./test.py  # can't run in CI
     exit 0
   '';
 }
