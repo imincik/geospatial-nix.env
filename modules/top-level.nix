@@ -137,6 +137,7 @@ in
     ./containers.nix
     ./debug.nix
   ]
+  ++ (listEntries ./applications)
   ++ (listEntries ./languages)
   ++ (listEntries ./services)
   ++ (listEntries ./integrations)
