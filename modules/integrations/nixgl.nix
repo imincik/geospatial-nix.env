@@ -7,13 +7,13 @@ let
 in
 {
   options.nixgl = {
-    enable = lib.mkEnableOption "the OpenGL support using NixGL";
+    enable = lib.mkEnableOption "OpenGL support using NixGL wrapper";
 
     package = lib.mkOption {
       type = lib.types.package;
       default = geopkgs.nixGL;
       defaultText = lib.literalExpression "geopkgs.nixGL";
-      description = "The nixGL package to use.";
+      description = "nixGL package to use.";
     };
   };
 
@@ -23,8 +23,8 @@ in
     ];
 
     enterShell = ''
-      echo "Enable OpenGL support for your program by running it with 'nixGLIntel <program>'"
-      echo "prefix. For example, 'nixGLIntel glxinfo'."
+      echo "Enable OpenGL support for program by running it with 'nixGLIntel <program>' wrapper."
+      echo "For example, 'nixGLIntel glxinfo' or 'nixGLIntel qgis'."
     '';
   };
 }
