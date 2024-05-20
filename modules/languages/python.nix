@@ -210,7 +210,7 @@ in
       POETRY_VIRTUALENVS_PATH = "/var/empty";
     };
 
-    enterShell = lib.concatStringsSep "\n" ([
+    prepareShell = lib.concatStringsSep "\n" ([
       ''
         export PYTHONPATH="$DEVENV_PROFILE/${cfg.package.sitePackages}''${PYTHONPATH:+:$PYTHONPATH}"
       ''
