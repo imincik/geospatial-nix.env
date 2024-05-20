@@ -67,6 +67,17 @@ in
       default = [ ];
     };
 
+    prepareShell = lib.mkOption {
+      type = types.lines;
+      internal = true;
+      description = ''
+        This option allows modules to execute bash code when entering the shell,
+        but this code runs before any user defined `enterShell` code is
+        executed.
+      '';
+      default = "";
+    };
+
     shell = lib.mkOption {
       type = types.package;
       internal = true;
@@ -181,12 +192,6 @@ in
         export DIRENV_ACTIVE="$PWD:''${DIRENV_ACTIVE-}"
       fi
 
-      # devenv helper
-      if [ ! type -p direnv &>/dev/null && -f .envrc ]; then
-        echo "You have .envrc but direnv command is not installed."
-        echo "Please install direnv: https://direnv.net/docs/installation.html"
-      fi
-
       mkdir -p .devenv
       rm -f .devenv/profile
       ln -s ${profile} .devenv/profile
@@ -197,7 +202,7 @@ in
         name = "devenv-shell";
         env = config.env;
         profile = profile;
-        shellHook = config.enterShell;
+        shellHook = config.prepareShell + config.enterShell;
         debug = config.devenv.debug;
       }
     );
