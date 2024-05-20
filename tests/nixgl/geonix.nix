@@ -12,7 +12,10 @@ in {
     pkgs.glxinfo
   ];
 
-  nixgl.enable = true;
+  nixgl = {
+    enable = true;
+    usageWarning = false;
+  };
 
   enterShell = ''
     set -euo pipefail
