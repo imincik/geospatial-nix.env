@@ -58,6 +58,7 @@ jobs:
           - custom-package
           - example-python-web
           - geonixcli
+          - grass
           - locales
           - nixgl
           - pg_featureserv
