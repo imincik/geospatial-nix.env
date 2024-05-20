@@ -15,16 +15,25 @@ in
       defaultText = lib.literalExpression "geopkgs.nixGL";
       description = "nixGL package to use.";
     };
+
+    usageWarning = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to show OpenGL usage warning.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    warnings = lib.mkIf cfg.usageWarning [
+      ''
+        OpenGL support is not available by default.
+        Enable OpenGL by running a program with 'nixGLIntel <program>' wrapper.
+        For example, 'nixGLIntel glxinfo' or 'nixGLIntel qgis'.
+      ''
+    ];
+
     packages = [
       cfg.package
     ];
-
-    enterShell = ''
-      echo "Enable OpenGL support for program by running it with 'nixGLIntel <program>' wrapper."
-      echo "For example, 'nixGLIntel glxinfo' or 'nixGLIntel qgis'."
-    '';
   };
 }
