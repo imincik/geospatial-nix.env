@@ -56,6 +56,7 @@ jobs:
           - container-python
           - container-shell
           - custom-package
+          - data
           - example-python-web
           - geonixcli
           - locales

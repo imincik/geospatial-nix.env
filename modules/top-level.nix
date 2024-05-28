@@ -149,6 +149,7 @@ in
     ./debug.nix
   ]
   ++ (listEntries ./applications)
+  ++ (listEntries ./data)
   ++ (listEntries ./languages)
   ++ (listEntries ./services)
   ++ (listEntries ./integrations)
