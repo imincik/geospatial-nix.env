@@ -50,7 +50,9 @@
             in
             { name = url; url = url; };
           options = pkgs.nixosOptionsDoc {
-            options = builtins.removeAttrs eval.options [ "_module" ];
+            # Don't include pre-commit modules in docs due to its size and large
+            # amount of hooks not relevant for this project
+            options = builtins.removeAttrs eval.options [ "_module" "pre-commit" ];
 
             warningsAreErrors = false;
 
