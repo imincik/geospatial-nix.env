@@ -51,7 +51,7 @@ in
     # TODO: Rename this from `process.${option}` to `process-manager.${option}` or `devenv.up.${option}`.
     process = {
       implementation = lib.mkOption {
-        type = types.enum [ "honcho" "overmind" "process-compose" "hivemind" ];
+        type = types.enum [ "honcho" "process-compose" ];
         description = "The implementation used when performing ``devenv up``.";
         default = "honcho";
         example = "overmind";
