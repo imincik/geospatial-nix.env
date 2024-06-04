@@ -67,6 +67,12 @@ in
         ]
       '';
     };
+
+    usageHint = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to show usage hint.";
+    };
   };
 
   config =
@@ -91,6 +97,9 @@ in
         (dataset: ''
           ln --symbolic --force ${dataset} ${stateDir}/$(basename ${dataset}) 
         '')
-        (builtins.map fetchData cfg.datasets);
+        (builtins.map fetchData cfg.datasets)
+      + lib.optionalString cfg.usageHint ''
+        echo "HINT: data is available in ${stateDir} directory."
+      '';
     };
 }
