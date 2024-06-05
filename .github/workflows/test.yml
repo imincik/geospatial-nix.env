@@ -59,6 +59,7 @@ jobs:
           - data
           - example-python-web
           - geonixcli
+          - jupyter
           - locales
           - nixgl
           - pg_featureserv
