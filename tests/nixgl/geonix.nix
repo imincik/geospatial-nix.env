@@ -14,7 +14,6 @@ in {
 
   nixgl = {
     enable = true;
-    usageWarning = false;
   };
 
   enterShell = ''
