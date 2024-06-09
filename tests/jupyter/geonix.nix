@@ -17,13 +17,13 @@ in
     kernels = {
       geospatial =
         let
-          env = (pkgs.python3.withPackages (ps: with ps; [
+          env = pkgs.python3.withPackages (ps: with ps; [
             ipykernel
             geopkgs.python3-gdal
             geopkgs.python3-geopandas
             geopkgs.python3-fiona
             geopkgs.python3-rasterio
-          ]));
+          ]);
         in
         {
           displayName = "Geospatial Python kernel";
