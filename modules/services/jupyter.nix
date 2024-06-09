@@ -83,9 +83,9 @@ let
   defaultKernel = {
     python3 =
       let
-        env = (pkgs.python3.withPackages (ps: with ps; [
+        env = pkgs.python3.withPackages (ps: with ps; [
           ipykernel
-        ]));
+        ]);
       in
       {
         displayName = "Default Python kernel";
@@ -142,13 +142,13 @@ in
         {
           geospatial =
             let
-              env = (pkgs.python3.withPackages (p: with p; [
+              env = pkgs.python3.withPackages (p: with p; [
                 ipykernel
                 geopkgs.python3-gdal
                 geopkgs.python3-geopandas
                 geopkgs.python3-fiona
                 geopkgs.python3-rasterio
-              ]));
+              ]);
           in
           {
             displayName = "Geospatial Python kernel";
@@ -166,10 +166,10 @@ in
 
           other =
             let
-              env = (pkgs.python3.withPackages (p: with p; [
+              env = pkgs.python3.withPackages (p: with p; [
                 ipykernel
                 pandas
-              ]));
+              ]);
           in
           {
             displayName = "Other Python kernel";
