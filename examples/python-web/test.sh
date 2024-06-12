@@ -4,12 +4,14 @@ set -euo pipefail
 
 source ../../tests/common.sh
 
+image_name="test-shell"
+
 function cleanup {
     echo -e "\nRunning cleanup ..."
     processes_down
 
-    docker kill shell || true
-    docker image rm --force shell || true
+    docker kill $image_name || true
+    docker image rm --force $image_name || true
 }
 trap cleanup EXIT ERR
 
@@ -40,10 +42,9 @@ processes_down  # terminate services
 
 # launch services (in container)
 echo -e "\nTEST: container with db backend"
-image_name="shell"
 
 # build container image
-nix run .#geonixcli -- container "$image_name"
+nix run .#geonixcli -- container shell
 
 # run container
 docker run -d --rm --name "$image_name" -p 5001:5000 "$image_name":latest

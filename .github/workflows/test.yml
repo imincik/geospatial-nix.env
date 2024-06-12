@@ -52,6 +52,7 @@ jobs:
         environment:
           - basic
           - basic-process
+          - container-custom
           - container-process
           - container-python
           - container-shell

@@ -19,6 +19,8 @@ let
 
 in
 {
+  name = "test";
+
   packages = [ ];
 
   languages.python = {

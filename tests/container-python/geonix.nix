@@ -13,6 +13,8 @@ let
 
 in
 {
+  name = "test";
+
   languages.python = {
     enable = true;
     package = python;
