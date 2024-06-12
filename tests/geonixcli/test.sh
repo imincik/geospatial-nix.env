@@ -7,7 +7,8 @@ source ../common.sh
 function cleanup {
     processes_down
     rm -rf ../test-project
-    docker image rm --force shell
+    docker image rm --force my-project-shell
+    docker image rm --force my-project-processes
 }
 trap cleanup EXIT ERR
 
@@ -45,7 +46,10 @@ nix run ../..#geonixcli -- container-config shell
 # container
 echo -e "\nCOMMAND: geonixcli container"
 nix run ../..#geonixcli -- container shell
-docker images | grep -E "^shell"
+docker images | grep -E "^my-project-shell"
+
+nix run ../..#geonixcli -- container processes
+docker images | grep -E "^my-project-processes"
 
 # update
 echo -e "\nCOMMAND: geonixcli update"
