@@ -4,7 +4,7 @@ set -euo pipefail
 
 source ../common.sh
 
-image_name="shell"
+image_name="test-shell"
 
 # build container image
 nix run .#geonixcli -- container shell

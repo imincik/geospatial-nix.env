@@ -8,5 +8,8 @@ let
   geopkgs = inputs.geonix.packages.${pkgs.system};
 
 in {
+
+  name = "test";
+
   packages = [ geopkgs.gdal-minimal ];
 }
