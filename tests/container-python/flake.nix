@@ -20,7 +20,10 @@
     nixpkgs.follows = "geonix/nixpkgs";
     nix2container = {
       url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "geonix/nixpkgs";
+      # Use latest skopeo due to GH runners Docker update and
+      # https://github.com/containers/skopeo/issues/2202 .
+      # TODO: re-enable nixpkgs following after update to nixpkgs 24.05
+      # inputs.nixpkgs.follows = "geonix/nixpkgs";
     };
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
   };
