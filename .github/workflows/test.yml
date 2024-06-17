@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
           # - macos-11
 
     runs-on: ${{ matrix.os }}
@@ -50,23 +50,23 @@ jobs:
       fail-fast: false
       matrix:
         environment:
-          - basic
-          - basic-process
-          - container-process
-          - container-python
+          # - basic
+          # - basic-process
+          # - container-process
+          # - container-python
           - container-shell
-          - custom-package
-          - data
-          - example-python-web
-          - geonixcli
-          - jupyter
-          - locales
-          - nixgl
-          - pg_featureserv
-          - pg_tileserv
-          - postgres
-          - python-poetry
-          - qgis
+          # - custom-package
+          # - data
+          # - example-python-web
+          # - geonixcli
+          # - jupyter
+          # - locales
+          # - nixgl
+          # - pg_featureserv
+          # - pg_tileserv
+          # - postgres
+          # - python-poetry
+          # - qgis
         os:
           - ubuntu-22.04
           # - macos-11
@@ -93,6 +93,9 @@ jobs:
       with:
         name: geonix
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+    # - name: Debug
+    #   uses: mxschmitt/action-tmate@v3
 
     - name: Run test
       run: bash ./test.sh

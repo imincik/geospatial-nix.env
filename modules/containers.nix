@@ -62,6 +62,9 @@ let
 
   # <container> <registry> <args>
   mkCopyScript = cfg: pkgs.writeScript "copy-container" ''
+
+    set -x
+  
     container=$1
     shift
 
@@ -84,6 +87,8 @@ let
     echo
     echo "Copying container $container to $dest"
     echo
+
+    exit 1
 
     ${nix2container.skopeo-nix2container}/bin/skopeo --insecure-policy copy "nix:$container" "$dest" "''${args[@]}"
   '';

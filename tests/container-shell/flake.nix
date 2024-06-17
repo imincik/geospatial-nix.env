@@ -20,7 +20,7 @@
     nixpkgs.follows = "geonix/nixpkgs";
     nix2container = {
       url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "geonix/nixpkgs";
+      # inputs.nixpkgs.follows = "geonix/nixpkgs";
     };
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
   };
