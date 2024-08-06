@@ -1,26 +1,15 @@
 { pkgs, config, lib, inputs, self, ... }:
 
 let
-  projectName = name:
-    if config.name == null
-    then throw ''You need to set `name = "myproject";` or `containers.${name}.name = "mycontainer"; to be able to generate a container.''
-    else config.name;
-  setup = ''
-    inputs:
-      nix2container:
-        url: github:nlewo/nix2container
-        inputs:
-          nixpkgs:
-            follows: nixpkgs
-      mk-shell-bin:
-        url: github:rrbutani/nix-mk-shell-bin
-  '';
   types = lib.types;
+
   envContainerName = builtins.getEnv "DEVENV_CONTAINER";
-  nix2containerInput = inputs.nix2container or (throw "To build the container, you need to add the following to your devenv.yaml:\n\n${setup}");
+
+  nix2containerInput = inputs.nix2container or (throw "To build the container, add nix2container input.");
   nix2container = nix2containerInput.packages.${pkgs.stdenv.system};
-  mk-shell-bin = inputs.mk-shell-bin or (throw "To build the container, you need to add the following to your devenv.yaml:\n\n${setup}");
+  mk-shell-bin = inputs.mk-shell-bin or (throw "To build the container, mk-shell-bin input.");
   shell = mk-shell-bin.lib.mkShellBin { drv = config.shell; nixpkgs = pkgs; };
+
   mkEntrypoint = cfg: pkgs.writeScript "entrypoint" ''
     #!${pkgs.bash}/bin/bash
 
@@ -30,8 +19,9 @@ let
 
     exec "$@"
   '';
+
   mkDerivation = cfg: nix2container.nix2container.buildImage {
-    name = cfg.name;
+    name = "${config.name}-${cfg.name}";
     tag = cfg.version;
     maxLayers = cfg.maxLayers;
     copyToRoot = [
@@ -73,7 +63,7 @@ let
     fi
     shift
 
-    dest="''${registry}${cfg.name}:${cfg.version}"
+    dest="''${registry}${config.name}-${cfg.name}:${cfg.version}"
 
     if [[ $# == 0 ]]; then
       args=(${toString cfg.defaultCopyArgs})
@@ -87,13 +77,13 @@ let
 
     ${nix2container.skopeo-nix2container}/bin/skopeo --insecure-policy copy "nix:$container" "$dest" "''${args[@]}"
   '';
+
   containerOptions = types.submodule ({ name, config, ... }: {
     options = {
       name = lib.mkOption {
         type = types.nullOr types.str;
         description = "Name of the container.";
-        defaultText = "top-level name or containers.mycontainer.name";
-        default = "${projectName name}-${name}";
+        default = "my-container";
       };
 
       version = lib.mkOption {

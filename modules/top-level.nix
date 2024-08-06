@@ -52,7 +52,7 @@ in
     name = lib.mkOption {
       type = types.nullOr types.str;
       description = "Name of the project.";
-      default = null;
+      default = "my-project";
     };
 
     enterShell = lib.mkOption {

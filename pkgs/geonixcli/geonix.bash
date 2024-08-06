@@ -384,7 +384,7 @@ elif [ "${args[0]}" == "container" ]; then
     container_name="$2"
     image_name=$(nix "${NIX_FLAGS[@]}" eval --raw ".#container-$container_name.imageName")
 
-    export DEVENV_CONTAINER=1
+    export DEVENV_CONTAINER="$container_name"
     copy_script=$( \
         nix build ".#container-$container_name.copyToDockerDaemon" --impure --no-link --print-out-paths \
     )

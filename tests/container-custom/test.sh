@@ -4,10 +4,10 @@ set -euo pipefail
 
 source ../common.sh
 
-image_name="test-processes"
+image_name="test-container-custom"
 
 # build container image
-nix run .#geonixcli -- container processes
+nix run .#geonixcli -- container custom
 
 # run container
 docker run -d --name "$image_name" -p 8000:8000 --rm "$image_name":latest

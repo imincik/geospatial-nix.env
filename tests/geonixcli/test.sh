@@ -5,19 +5,31 @@ set -euo pipefail
 source ../common.sh
 
 function cleanup {
+    echo -e "\nRunning cleanup ..."
     processes_down
-    rm -rf ../test-project
-    docker image rm --force shell
+
+    popd
+    git rm -rf test-project
+    rm -rf test-project
+
+    docker kill my-project-shell || true
+    docker image rm --force my-project-shell || true
+
+    docker kill my-project-processes || true
+    docker image rm --force my-project-processes || true
 }
 trap cleanup EXIT ERR
 
-mkdir test-project && cd test-project
+
+mkdir test-project && pushd test-project
 
 # init
 echo -e "\nCOMMAND: geonixcli init"
-git init
 nix run ../..#geonixcli -- init
 git add *
+
+sed -i "s|github:imincik/geospatial-nix.env/latest|path:../../../.|g" flake.nix
+nix flake update
 
 # check
 echo -e "\nCOMMAND: geonixcli check"
@@ -45,7 +57,10 @@ nix run ../..#geonixcli -- container-config shell
 # container
 echo -e "\nCOMMAND: geonixcli container"
 nix run ../..#geonixcli -- container shell
-docker images | grep -E "^shell"
+docker images | grep -E "^my-project-shell"
+
+nix run ../..#geonixcli -- container processes
+docker images | grep -E "^my-project-processes"
 
 # update
 echo -e "\nCOMMAND: geonixcli update"
