@@ -60,6 +60,7 @@ jobs:
           - data
           - example-python-web
           - geonixcli
+          - grass
           - jupyter
           - locales
           - nixgl
