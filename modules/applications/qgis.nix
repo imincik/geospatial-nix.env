@@ -16,6 +16,12 @@ in
       description = "QGIS package to use.";
     };
 
+    withGrass = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable GRASS GIS support.";
+    };
+
     pythonPackages = lib.mkOption {
       type = with lib.types; nullOr (functionTo (listOf package));
       default = null;
@@ -45,7 +51,10 @@ in
 
   config =
     let
-      qgisPackage = cfg.package.override { extraPythonPackages = cfg.pythonPackages; };
+      qgisPackage = cfg.package.override {
+        qgis-unwrapped = cfg.package.passthru.unwrapped.override { withGrass = cfg.withGrass; };
+        extraPythonPackages = cfg.pythonPackages;
+      };
 
       pluginsCollection = pkgs.symlinkJoin {
         name = "qgis-plugins-collection";
