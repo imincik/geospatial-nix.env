@@ -4,17 +4,19 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in
 {
   packages = [ ];
 
   applications.qgis = {
     enable = true;
-    pythonPackages = p: [ pkgs.python3Packages.flask geopkgs.python3-fiona ];
-    plugins = p: [ geopkgs.qgis-plugin-qgis2web geopkgs.qgis-plugin-QGIS-Cloud-Plugin ];
+    pythonPackages = p: [
+      pkgs.python3Packages.flask
+      pkgs.python3Packages.fiona
+    ];
+    plugins = p: [
+      pkgs.qgisPlugins.qgis2web
+      pkgs.qgisPlugins.QGIS-Cloud-Plugin
+    ];
   };
 
   enterShell = ''

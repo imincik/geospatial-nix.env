@@ -4,12 +4,9 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in {
+{
   packages = [
-    geopkgs.gdal-minimal
+    pkgs.gdalMinimal
   ];
 
   enterShell = ''

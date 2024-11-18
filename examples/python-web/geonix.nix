@@ -5,16 +5,12 @@
 { inputs, config, lib, pkgs, ... }:
 
 let
-  # Geospatial NIX packages
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-  python = pkgs.python3.withPackages (p: [
-    # packages from Geospatial NIX
-    geopkgs.python3-psycopg
-    geopkgs.python3-shapely
-
-    # packages from Nixpkgs 
-    pkgs.python3.pkgs.matplotlib
+  # Python 3.12 is failing on
+  # AttributeError: module 'psycopg_c.pq' has no attribute '__impl__'
+  python = pkgs.python311.withPackages (p: [
+    pkgs.python311Packages.matplotlib
+    pkgs.python311Packages.psycopg
+    pkgs.python311Packages.shapely
   ]);
 
 in
@@ -36,7 +32,7 @@ in
     listen_addresses = "127.0.0.1";
     port = 15432;
 
-    extensions = e: [ geopkgs.postgresql-postgis ];
+    extensions = e: [ pkgs.postgresqlPackages.postgis ];
 
     settings =  {
       # verbose logging

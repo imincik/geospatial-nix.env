@@ -2,7 +2,6 @@
 
 let
   cfg = config.nixgl;
-  geopkgs = inputs.geonix.packages.${pkgs.system};
 
 in
 {
@@ -11,8 +10,8 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = geopkgs.nixGL;
-      defaultText = lib.literalExpression "geopkgs.nixGL";
+      default = pkgs.nixGL;
+      defaultText = lib.literalExpression "pkgs.nixGL";
       description = "nixGL package to use.";
     };
 

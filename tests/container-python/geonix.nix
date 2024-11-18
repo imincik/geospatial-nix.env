@@ -5,10 +5,8 @@
 { inputs, config, lib, pkgs, ... }:
 
 let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
   python = pkgs.python3.withPackages (p: [
-    geopkgs.python3-fiona
+    pkgs.python3Packages.fiona
   ]);
 
 in
