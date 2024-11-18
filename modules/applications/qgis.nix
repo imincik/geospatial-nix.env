@@ -2,7 +2,6 @@
 
 let
   cfg = config.applications.qgis;
-  geopkgs = inputs.geonix.packages.${pkgs.system};
 
 in
 {
@@ -11,8 +10,8 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = geopkgs.qgis;
-      defaultText = lib.literalExpression "geopkgs.qgis";
+      default = pkgs.qgis;
+      defaultText = lib.literalExpression "pkgs.qgis";
       description = "QGIS package to use.";
     };
 
@@ -28,8 +27,8 @@ in
       description = "List of extra Python packages to include.";
       example = lib.literalExpression ''
         packages: [
-          pkgs.flask
-          geopkgs.python3-fiona
+          pkgs.python3Packages.flask
+          pkgs.python3Packages.fiona
         ];
       '';
     };
@@ -42,8 +41,8 @@ in
       description = "List of QGIS plugins to include.";
       example = lib.literalExpression ''
         plugins: [
-          geopkgs.qgis-plugin-qgis2web
-          geopkgs.qgis-plugin-QGIS-Cloud-Plugin
+          pkgs.qgisPlugins.qgis2web
+          pkgs.qgisPlugins.QGIS-Cloud-Plugin
         ];
       '';
     };
@@ -52,8 +51,8 @@ in
   config =
     let
       qgisPackage = cfg.package.override {
-        qgis-unwrapped = cfg.package.passthru.unwrapped.override { withGrass = cfg.withGrass; };
         extraPythonPackages = cfg.pythonPackages;
+        withGrass = cfg.withGrass;
       };
 
       pluginsCollection = pkgs.symlinkJoin {

@@ -34,5 +34,5 @@ nix run .#geonixcli -- update geoenv
     For example, this will pin `geonix` version to `v2024.18.0`.
 
       ```
-      geonix.url = "github:imincik/geospatial-nix/v2024.18.0";
+      geonix.url = "github:imincik/geospatial-nix.repo/v2024.18.0";
       ```

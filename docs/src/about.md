@@ -57,10 +57,8 @@ provided by the Nix ecosystem.
 ### Geospatial NIX
 
 **Geospatial NIX** is weekly updated packages repository providing latest
-versions of the core geospatial libraries such as GDAL, GEOS, PDAL or
-PROJ, growing selection of Python libraries, desktop software like QGIS and
-PostgreSQL/PostGIS database system and various geospatial services. All packages
-are always consistently built together.
+versions of geospatial and non-geospatial software provided by Nixpkgs unstable
+branch.
 
 ### Geospatial NIX.env
 

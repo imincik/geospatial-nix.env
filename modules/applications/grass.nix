@@ -2,7 +2,6 @@
 
 let
   cfg = config.applications.grass;
-  geopkgs = inputs.geonix.packages.${pkgs.system};
 
 in
 {
@@ -11,8 +10,8 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = geopkgs.grass;
-      defaultText = lib.literalExpression "geopkgs.grass";
+      default = pkgs.grass;
+      defaultText = lib.literalExpression "pkgs.grass";
       description = "GRASS package to use.";
     };
 
@@ -24,8 +23,8 @@ in
       description = "List of GRASS plugins (addons) to include.";
       example = lib.literalExpression ''
         plugins: [
-          geopkgs.grass-plugin-r-hydrodem
-          geopkgs.grass-plugin-v-histogram
+          pkgs.grassPlugins.r-hydrodem
+          pkgs.grassPlugins.v-histogram
         ];
       '';
     };
