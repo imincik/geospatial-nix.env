@@ -144,10 +144,10 @@ in
             let
               env = pkgs.python3.withPackages (p: with p; [
                 ipykernel
-                geopkgs.python3-gdal
-                geopkgs.python3-geopandas
-                geopkgs.python3-fiona
-                geopkgs.python3-rasterio
+                pkgs.python3Packages.gdal
+                pkgs.python3Packages.geopandas
+                pkgs.python3Packages.fiona
+                pkgs.python3Packages.rasterio
               ]);
           in
           {

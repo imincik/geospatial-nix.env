@@ -7,7 +7,6 @@ function usage {
 cat <<EOF
 Usage: geonix [-h] [-v] command arg1 [arg2...]
 
-
 Available options:
 
 -h, --help          Print this help and exit.
@@ -23,9 +22,6 @@ check               Check configuration for errors.
 shell               Launch shell environment.
 
 up                  Start processes configured in geonix.nix.
-
-override            Create overrides.nix template file in current
-                    directory for building customized Geospatial NIX packages.
 
 
 Container commands:
@@ -62,6 +58,7 @@ function setup_colors {
   if [[ -t 2 ]] && [[ "${TERM-}" != "dumb" ]]; then
     NOFORMAT='\033[0m' BOLD='\033[1m'
   else
+    # shellcheck disable=SC2034
     NOFORMAT='' BOLD=''
   fi
 }
@@ -112,39 +109,6 @@ function versionge {
     [ "$1" == "$(echo -e "$1\n$2" | sort --version-sort | tail -n1)" ]
 }
 
-function get_nixpkgs_metadata {
-    nixpkgs_exists=$( \
-        nix "${NIX_FLAGS[@]}" flake metadata  --json \
-        | jq --raw-output '.locks.nodes.nixpkgs' \
-    )
-
-    if [ "$nixpkgs_exists" != "null" ]; then
-
-        nixpkgs_url=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '
-                (.locks.nodes.nixpkgs.original.type)
-                + ":"
-                + (.locks.nodes.nixpkgs.original.owner)
-                + "/"
-                + (.locks.nodes.nixpkgs.original.repo)
-            ' \
-        )
-
-        # shellcheck disable=SC2034
-        nixpkgs_ref=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '.locks.nodes.nixpkgs.original.ref' \
-            | sed 's|/$||'
-        )
-
-        nixpkgs_rev=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '.locks.nodes.nixpkgs.locked.rev' \
-        )
-    fi
-}
-
 function get_geonix_metadata {
     geonix_exists=$( \
         nix "${NIX_FLAGS[@]}" flake metadata  --json \
@@ -172,6 +136,7 @@ function get_geonix_metadata {
 
         elif [ "$geonix_type" == "path" ]; then
 
+            # shellcheck disable=SC2034
             geonix_url=$( \
                 nix "${NIX_FLAGS[@]}" flake metadata  --json \
                 | jq --raw-output '.locks.nodes.geonix.original.path' \
@@ -185,56 +150,10 @@ function get_geonix_metadata {
             | sed 's|/$||'
         )
 
+        # shellcheck disable=SC2034
         geonix_rev=$( \
             nix "${NIX_FLAGS[@]}" flake metadata  --json \
             | jq --raw-output '.locks.nodes.geonix.locked.rev' \
-        )
-    fi
-}
-
-function get_geoenv_metadata {
-    geoenv_exists=$( \
-        nix "${NIX_FLAGS[@]}" flake metadata  --json \
-        | jq --raw-output '.locks.nodes.geoenv' \
-    )
-
-    if [ "$geoenv_exists" != "null" ]; then
-
-        geoenv_type=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '.locks.nodes.geoenv.original.type'
-        )
-
-        if [ "$geoenv_type" == "github" ]; then
-
-            geoenv_url=$( \
-                nix "${NIX_FLAGS[@]}" flake metadata  --json \
-                | jq --raw-output '
-                    (.locks.nodes.geoenv.original.type)
-                    + ":" + (.locks.nodes.geoenv.original.owner)
-                    + "/"
-                    + (.locks.nodes.geoenv.original.repo)
-                ' \
-            )
-
-        elif [ "$geoenv_type" == "path" ]; then
-
-            geoenv_url=$( \
-                nix "${NIX_FLAGS[@]}" flake metadata  --json \
-                | jq --raw-output '.locks.nodes.geoenv.original.path' \
-            )
-        fi
-
-        # shellcheck disable=SC2034
-        geoenv_ref=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '.locks.nodes.geoenv.original.ref' \
-            | sed 's|/$||'
-        )
-
-        geoenv_rev=$( \
-            nix "${NIX_FLAGS[@]}" flake metadata  --json \
-            | jq --raw-output '.locks.nodes.geoenv.locked.rev' \
         )
     fi
 }
@@ -262,7 +181,7 @@ if [ "${args[0]}" == "init" ]; then
     done
 
     echo -e "\nWelcome to Geospatial NIX environment !\n"
-    for init_file in "flake.nix" "geonix.nix" "dot-envrc"; do
+    for init_file in "flake.nix" "geonix.nix" "overlays.nix" "dot-envrc"; do
         cp "$GEONIX_TEMPLATES_DIR"/init/$init_file "$(pwd)"/$init_file
         chmod u+w "$(pwd)"/$init_file
 
@@ -305,11 +224,10 @@ elif [ "${args[0]}" == "search" ]; then
     [[ ${#args[@]} -lt 2 ]] \
         && die "Missing package search string. Use --help to get more information."
 
-    get_nixpkgs_metadata
     get_geonix_metadata
 
     function nix_search {
-        results=$(nix "${NIX_FLAGS[@]}" search --json "$1" "$2")
+        results=$(nix "${NIX_FLAGS[@]}" search --json "$1" "$2" --exclude "^packages")
 
         if [ "$results" != "{}" ]; then
             # jq expression taken from devenv (https://github.com/cachix/devenv). Thank you !
@@ -327,25 +245,10 @@ elif [ "${args[0]}" == "search" ]; then
         fi
     }
 
-    function geonix_search {
-        nix_search "$1" "$2" | sed "s/^pkgs./geopkgs./"
-    }
-
-    if [ "$nixpkgs_exists" != "null" ]; then
-
-        if [ "$nixpkgs_rev" != "null" ]; then
-            echo -e "\n${BOLD}$nixpkgs_url/$nixpkgs_rev ${NOFORMAT}"
-            nix_search "$nixpkgs_url/$nixpkgs_rev" "${args[@]:1}" \
-                | column -ts $'\t'
-        fi
-    fi
-
     if [ "$geonix_exists" != "null" ]; then
-
         if [ "$geonix_rev" != "null" ]; then
             echo -e "\n${BOLD}$geonix_url/$geonix_rev ${NOFORMAT}"
-            geonix_search "$geonix_url/$geonix_rev" "${args[@]:1}" \
-                | grep -v "unwrapped\|all-packages" \
+            nix_search "$geonix_url/$geonix_rev" "${args[@]:1}" \
                 | column -ts $'\t'
         fi
     fi
@@ -412,21 +315,7 @@ elif [ "${args[0]}" == "container-config" ]; then
     cat "$container_config"
 
 
-# OVERRIDE
-elif [ "${args[0]}" == "override" ]; then
-
-    if [ -f "$(pwd)/overrides.nix" ]; then
-        die "overrides.nix file already exists in $(pwd) directory."
-    else
-        cp "$(nix "${NIX_FLAGS[@]}" eval .#overrides)" "$(pwd)"/overrides.nix
-        chmod u+w "$(pwd)"/overrides.nix
-
-        echo -e "\noverrides.nix file created in $(pwd)/overrides.nix ."
-        echo "Don't forget to add it to git."
-    fi
-
-
-# check
+# CHECK
 elif [ "${args[0]}" == "check" ]; then
 
     nix "${NIX_FLAGS[@]}" flake check --impure --no-build
@@ -435,14 +324,7 @@ elif [ "${args[0]}" == "check" ]; then
 # VERSION
 elif [ "${args[0]}" == "version" ]; then
 
-    get_nixpkgs_metadata
-    get_geonix_metadata
-    get_geoenv_metadata
-
-    echo
-    echo -e "${BOLD}Nixpkgs:${NOFORMAT}            $nixpkgs_url/$nixpkgs_rev"
-    echo -e "${BOLD}Geospatial NIX:${NOFORMAT}     $geonix_url/$geonix_rev"
-    echo -e "${BOLD}Geospatial NIX.env:${NOFORMAT} $geoenv_url/$geoenv_rev"
+    nix "${NIX_FLAGS[@]}" flake metadata
 
 
 # HELP

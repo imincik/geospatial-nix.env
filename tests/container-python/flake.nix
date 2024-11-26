@@ -3,16 +3,16 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://geonix.cachix.org"
+      "https://geonix-rolling.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "geonix.cachix.org-1:iyhIXkDLYLXbMhL3X3qOLBtRF8HEyAbhPXjjPeYsCl0="
+      "geonix-rolling.cachix.org-1:27FqadR8Jqcwl+OY7+JvhRJoWixjMwX8xrwc6kIBnDo="
     ];
     bash-prompt = "\\[\\033[1m\\][geonix]\\[\\033\[m\\]\\040\\w >\\040";
   };
 
   inputs = {
-    geonix.url = "github:imincik/geospatial-nix";
+    geonix.url = "github:imincik/geospatial-nix.rolling";
     geoenv = {
       url = "path:../../.";
       inputs.nixpkgs.follows = "geonix/nixpkgs";
@@ -33,8 +33,13 @@
       ];
 
       systems = [ "x86_64-linux" ];
-
       perSystem = { config, self', inputs', pkgs, system, ... }: {
+
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system;
+          overlays = [ inputs.geonix.overlays.geonix ];
+          config.allowUnfree = true;
+        };
 
         devenv.shells.default = {
           imports = [

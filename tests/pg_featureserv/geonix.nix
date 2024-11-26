@@ -4,13 +4,10 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in {
+{
   services.postgres = {
     enable = true;
-    extensions = e: [ geopkgs.postgresql-postgis ];
+    extensions = e: [ pkgs.postgresqlPackages.postgis ];
     initialScript = ''
       CREATE EXTENSION IF NOT EXISTS postgis;
     '';
@@ -18,6 +15,6 @@ in {
 
   services.pg_featureserv = {
     enable = true;
-    package = geopkgs.pg_featureserv;
+    package = pkgs.pg_featureserv;
   };
 }

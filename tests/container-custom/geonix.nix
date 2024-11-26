@@ -4,10 +4,7 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in {
+{
   name = "test";
 
   containers.custom = {

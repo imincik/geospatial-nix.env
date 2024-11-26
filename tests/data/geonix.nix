@@ -4,10 +4,6 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in
 {
   packages = [ ];
 

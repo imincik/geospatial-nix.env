@@ -4,13 +4,10 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in {
+{
   services.postgres = {
     enable = true;
-    extensions = e: [ geopkgs.postgresql-postgis ];
+    extensions = e: [ pkgs.postgresqlPackages.postgis ];
     listen_addresses = "127.0.0.1";
   };
 }

@@ -1,9 +1,5 @@
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in
 {
   name = "geospatial-nix.env-docs";
 

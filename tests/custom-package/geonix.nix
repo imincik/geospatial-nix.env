@@ -4,16 +4,9 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.lib.customizePackages {
-    nixpkgs = pkgs;
-    geopkgs = inputs.geonix.packages.${pkgs.system};
-    overridesFile = ./overrides.nix;
-  };
-in
 {
   packages = [
-    geopkgs.gdal
+    pkgs.gdal
   ];
 
   enterShell = ''

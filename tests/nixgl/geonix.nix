@@ -4,10 +4,7 @@
 
 { inputs, config, lib, pkgs, ... }:
 
-let
-  geopkgs = inputs.geonix.packages.${pkgs.system};
-
-in {
+{
   packages = [
     pkgs.glxinfo
   ];
@@ -18,7 +15,7 @@ in {
 
   enterShell = ''
     set -euo pipefail
-    ${geopkgs.nixGL}/bin/nixGLIntel ${pkgs.glxinfo}/bin/glxinfo | grep -i 'OpenGL version string'
+    ${pkgs.nixGL}/bin/nixGLIntel ${pkgs.glxinfo}/bin/glxinfo | grep -i 'OpenGL version string'
     exit 0
   '';
 }
