@@ -136,14 +136,14 @@
         "lastModified": 1732535843,
         "narHash": "sha256-UdyeJQ4K8YSRtJSxQo5P3Kfg4jZuBnbAYyoTK7uO+fo=",
         "owner": "imincik",
-        "repo": "geospatial-nix.rolling",
+        "repo": "geospatial-nix.repo",
         "rev": "df0ccde9b221de722b330953eb0a262ec8e66d41",
         "type": "github"
       },
       "original": {
         "owner": "imincik",
         "ref": "latest",
-        "repo": "geospatial-nix.rolling",
+        "repo": "geospatial-nix.repo",
         "type": "github"
       }
     },
