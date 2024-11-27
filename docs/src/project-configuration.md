@@ -7,7 +7,7 @@ languages.
 
 ## Adding more features
 
-By default, the new environment contains only a single `gdal-minimal` package in
+By default, the new environment contains only a single `gdalMinimal` package in
 `packages` list.
 
 ```
@@ -22,13 +22,13 @@ By default, the new environment contains only a single `gdal-minimal` package in
 
 ### Adding more packages
 
-Update `packages` list as following to add `QGIS` package from Geospatial NIX
+Update `packages` list as following to add `pdal` package from Geospatial NIX
 repository and `tmux` package from Nixpkgs repository:
 
 ```
 packages = [
   pkgs.gdalMinimal
-  pkgs.qgis
+  pkgs.pdal
   pkgs.tmux
 ];
 ```

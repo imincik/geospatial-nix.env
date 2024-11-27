@@ -20,6 +20,10 @@ doesn't need to be modified.
 `geonix.nix` file contains project configuration and is modified by user
 according to their needs. See [configuration](project-configuration.md).
 
+## overlays.nix
+
+`overlays.nix` provides a unique way of packages build process customization.
+
 ## dot-envrc
 
 This file allows fast, automatic environment activation and evaluation caching
