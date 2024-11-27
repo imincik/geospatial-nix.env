@@ -50,13 +50,13 @@ anywhere else.
 
 ## Geospatial NIX ecosystem
 
-**Geospatial NIX**, **Geospatial NIX.env** and **Geospatial NIX.today** are
+**Geospatial NIX.repo**, **Geospatial NIX.env** and **Geospatial NIX.today** are
 built on top of Nix, Nix packages (Nixpkgs) and unique features and tools
 provided by the Nix ecosystem.
 
-### Geospatial NIX
+### Geospatial NIX.repo
 
-**Geospatial NIX** is weekly updated packages repository providing latest
+**Geospatial NIX.repo** is a weekly updated packages repository providing latest
 versions of geospatial and non-geospatial software provided by Nixpkgs unstable
 branch.
 
